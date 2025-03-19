@@ -1,0 +1,20 @@
+{
+  "name": "@repo/contracts",
+  "version": "1.0.0",
+  "scripts": {
+    "compile": "npx hardhat compile",
+    "deploy-solo": "npx hardhat run scripts/deploy.ts --network vechain_solo",
+    "deploy-testnet": "npx hardhat run scripts/deploy.ts --network vechain_testnet",
+    "solo-up": "make solo-up",
+    "solo-down": "make solo-down"
+  },
+  "dependencies": {
+    "ts-node": "^10.9.2",
+    "@repo/config-contract": "*"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^3.0.8",
+    "@vechain/sdk-hardhat-plugin": "^1.0.0",
+    "hardhat": "^2.22.19"
+  }
+}

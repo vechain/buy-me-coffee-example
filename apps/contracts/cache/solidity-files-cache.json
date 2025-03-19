@@ -1,0 +1,41 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/Users/claytonneal/Documents/github/buy-me-a-coffee/buy-me-a-coffee/apps/contracts/contracts/BuyMeACoffee.sol": {
+      "lastModificationDate": 1741825632561,
+      "contentHash": "720cd77b91d25e4fb1b7c98dd24a5e6d",
+      "sourceName": "contracts/BuyMeACoffee.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.18"
+      ],
+      "artifacts": [
+        "BuyMeACoffee"
+      ]
+    }
+  }
+}

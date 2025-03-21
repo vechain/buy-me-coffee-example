@@ -151,7 +151,7 @@ export function BuyCoffee() {
   };
 
   return (
-    <div style={{ position: "relative", top: "50px" }}>
+    <div style={{ position: "relative", top: "50px", height: '300px' }}>
       <Button
         onClick={handleSendCoffee}
         variant="unstyled"

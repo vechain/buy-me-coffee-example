@@ -83,7 +83,7 @@ export function TransactionHistory() {
       width="100%"
       maxW="1500px"
       mx="auto"
-      style={{ position: "relative", top: "260px" }}
+    //   style={{ position: "relative", top: "260px" }}
     >
       <Box
         as={motion.div}

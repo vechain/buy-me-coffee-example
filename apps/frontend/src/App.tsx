@@ -1,13 +1,16 @@
-import React from "react";
+import React, {useState} from "react";
 import { Box } from "@chakra-ui/react";
-import "./App.css";
 import { AppHeader } from "./components/header";
 import { BuyCoffee } from "./components/buycoffee";
 import { TransactionHistory } from "./components/txhistory";
 import { WelcomeText } from "./components/welcomeText";
 import { SendCoffee } from "./components/sendcoffee";
+import "./App.css";
 
 const App = () => {
+  const [refetchHistory, setRefetchHistory] = useState(null) //this state is triggered once the transaction went through 
+                                                             // so we can update the list
+
   return (
     <Box minH="100vh" width="100%">
       <AppHeader />
@@ -23,9 +26,9 @@ const App = () => {
         mx="auto" // Center the content horizontally
       >
         <WelcomeText />
-        <SendCoffee/>
-        <BuyCoffee />
-        <TransactionHistory />
+        <SendCoffee refetch={setRefetchHistory}/>
+        <BuyCoffee refetch={setRefetchHistory}/>
+        <TransactionHistory fetch={refetchHistory}/>
       </Box>
     </Box>
   );

@@ -36,7 +36,7 @@ enum TransactionStatus {
   Reverted = "REVERTED",
 }
 
-export function SendCoffee() {
+export function SendCoffee({refetch}) {
   const { account } = useWallet();
   const { vendor } = useConnex();
   const toast = useToast();
@@ -126,6 +126,7 @@ export function SendCoffee() {
           duration: 5000,
           isClosable: true,
         });
+        refetch(txReceipt)
       }
     } catch (error) {
       console.error("Error sending coffee:", error);
@@ -145,6 +146,7 @@ export function SendCoffee() {
   const handleSendCoffee = () => {
     setTxId(null);
     setTxStatus(TransactionStatus.NotSent);
+    setName("");
     setAddress("");
     setMessage("");
     onModalOpen();

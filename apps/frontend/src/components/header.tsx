@@ -12,7 +12,7 @@ export function AppHeader() {
                 <a href="https://vechain.org" target="_blank">
                     <img src={vechainLogo} className="logo" alt="VeChain logo" />
                 </a>
-                {/* <VetBalance/> */}
+                <VetBalance/>
                 <LoginButton/>
             </Box>
         </Box>

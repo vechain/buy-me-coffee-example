@@ -1,5 +1,5 @@
 export const config = {
-  "CONTRACT_ADDRESS": "0xe20b7d326234ab268fbec11be1d3565a3380a1b1"
+  "CONTRACT_ADDRESS": "0xbf0f3f5b273693bd6552567631d2615ffd5f4b35"
 };
 export const COFFEE_CONTRACT_ABI = [
   {
@@ -14,6 +14,12 @@ export const COFFEE_CONTRACT_ABI = [
         "indexed": true,
         "internalType": "address",
         "name": "from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "to",
         "type": "address"
       },
       {
@@ -74,6 +80,11 @@ export const COFFEE_CONTRACT_ABI = [
             "type": "address"
           },
           {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
             "internalType": "uint256",
             "name": "timestamp",
             "type": "uint256"
@@ -100,6 +111,29 @@ export const COFFEE_CONTRACT_ABI = [
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address payable",
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "_name",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_message",
+        "type": "string"
+      }
+    ],
+    "name": "sendCoffee",
+    "outputs": [],
+    "stateMutability": "payable",
     "type": "function"
   },
   {

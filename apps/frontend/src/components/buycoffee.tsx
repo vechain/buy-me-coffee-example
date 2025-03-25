@@ -36,7 +36,7 @@ enum TransactionStatus {
   Reverted = "REVERTED",
 }
 
-export function BuyCoffee() {
+export function BuyCoffee({refetch}) {
   const { account } = useWallet();
   const { vendor } = useConnex();
   const toast = useToast();
@@ -126,6 +126,7 @@ export function BuyCoffee() {
           duration: 5000,
           isClosable: true,
         });
+        refetch(txReceipt)
       }
     } catch (error) {
       console.error("Error sending coffee:", error);

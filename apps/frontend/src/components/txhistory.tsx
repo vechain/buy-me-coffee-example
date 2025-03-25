@@ -46,7 +46,7 @@ const buttonVariants = {
   tap: { scale: 0.95 },
 };
 
-export function TransactionHistory() {
+export function TransactionHistory({fetch}) {
   const [history, setHistory] = useState<CoffeeDonation[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -74,7 +74,7 @@ export function TransactionHistory() {
   // Fetch history on component mount
   useEffect(() => {
     getHistory();
-  }, []); // Empty dependency array ensures this runs only on mount
+  }, [fetch]); // Everytime we successfully send it, it will reload the data
 
   return (
     <VStack

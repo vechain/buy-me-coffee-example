@@ -56,7 +56,7 @@ npm run deploy-mainnet
 ```
 
 ### How the DApp Works
-The DApp allows users to purchase coffee for the owner by sending a specified amount of Ether. Users can also send coffee to specific addresses with a message.
+The DApp allows users to purchase coffee for the owner by sending a specified amount of VET. Users can also send coffee to specific addresses with a message.
 
 ### Functions Overview
 1. getSales() <br/>
@@ -82,7 +82,7 @@ Events: Emits CoffeeSold event upon successful purchase.
    - **Functionality**:
      - **Validation**: Ensures that the purchase amount is greater than zero.
      - **Storage**: Adds the sale details to the `sales` array, storing the transaction data on the blockchain.
-     - **Ether Transfer**: Sends the Ether value to the contract owner.
+     - **VET Transfer**: Sends the VET value to the contract owner.
      - **Event Emission**: Emits the `CoffeeSold` event to notify listeners about the purchase.
 
 3. sendCoffee(address payable _to, string memory _name, string memory _message) <br/> 
@@ -100,7 +100,7 @@ Events: Emits CoffeeSold event upon successful sending.
    - **Functionality**:
      - **Validation**: Checks that the purchase amount is valid.
      - **Storage**: Similar to `buyCoffee`, it records the sale details.
-     - **Ether Transfer**: Sends the specified amount of Ether to the recipient's address.
+     - **VET Transfer**: Sends the specified amount of VET to the recipient's address.
      - **Event Emission**: Emits the `CoffeeSold` event to indicate a successful transaction.
 
 4. withdrawTips() <br/>
@@ -109,7 +109,7 @@ Access Control: Only the owner can execute this function.
  - **Purpose**: Allows the contract owner to withdraw the balance stored in the contract.
    - **Functionality**:
      - **Access Control**: Ensures that only the owner can execute this function.
-     - **Ether Transfer**: Transfers the entire balance from the contract to the owner's address.
+     - **VET Transfer**: Transfers the entire balance from the contract to the owner's address.
 
 ## Frontend Overview
 The frontend of the "Buy Me A Coffee" DApp is built using React and Vite. It provides an interactive user interface for users to buy coffee for the owner, view transaction history, and send coffee with personalized messages.
@@ -126,7 +126,7 @@ The frontend of the "Buy Me A Coffee" DApp is built using React and Vite. It pro
 #### BuyCoffee.tsx
 - **Purpose**: Allows users to buy coffee for the contract owner.
 - **Functionality**:
-  - **User Input**: Provides a modal where users can enter their name, message, and the amount of Ether they wish to send.
+  - **User Input**: Provides a modal where users can enter their name, message, and the amount of VET they wish to send.
   - **Blockchain Interaction**: Utilizes the VeChain DApp Kit to connect to the smart contract and call the `buyCoffee` function.
   - **Validation**: Ensures that the amount sent is greater than zero, preventing free donations.
   - **Event Handling**: Emits the `CoffeeSold` event upon successful purchase, which updates the transaction history.
@@ -142,5 +142,5 @@ The frontend of the "Buy Me A Coffee" DApp is built using React and Vite. It pro
 - **Purpose**: Enables users to send coffee to specific addresses.
 - **Functionality**:
   - **Recipient Input**: Allows users to specify the recipient's address along with their name and message.
-  - **Blockchain Interaction**: Calls the `sendCoffee` function from the smart contract to send the specified amount of Ether to the recipient.
+  - **Blockchain Interaction**: Calls the `sendCoffee` function from the smart contract to send the specified amount of VET to the recipient.
   - **Validation**: Similar to `BuyCoffee`, it ensures that the amount sent is valid and greater than zero.

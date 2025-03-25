@@ -1,4 +1,4 @@
-import vechainLogo from "../../public/vechain.png";
+import vechainLogo from "../assets/vechain.png";
 import {Heading, Text, Box} from "@chakra-ui/react";
 import './header.css';
 import React from "react";

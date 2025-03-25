@@ -10,7 +10,7 @@ import {THOR_URL} from "./config/constants.ts";
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
       <ChakraProvider>
-          <DAppKitProvider nodeUrl={THOR_URL} genesis={"test"} usePersistence={true}>
+          <DAppKitProvider node={THOR_URL}>
             <App/>
           </DAppKitProvider>
       </ChakraProvider>

@@ -1,9 +1,9 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/Users/claytonneal/Documents/github/buy-me-a-coffee/buy-me-a-coffee/apps/contracts/contracts/BuyMeACoffee.sol": {
-      "lastModificationDate": 1741825632561,
-      "contentHash": "720cd77b91d25e4fb1b7c98dd24a5e6d",
+    "/Users/andreas.frank/work/buy-me-a-coffee/apps/contracts/contracts/BuyMeACoffee.sol": {
+      "lastModificationDate": 1742893297363,
+      "contentHash": "023961ae99345e30eda021e059e69c49",
       "sourceName": "contracts/BuyMeACoffee.sol",
       "solcConfig": {
         "version": "0.8.20",

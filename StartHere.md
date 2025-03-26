@@ -60,7 +60,7 @@ import { useWallet, useWalletModal } from "@vechain/dapp-kit-react";
 
 export function ConnectWalletButton() {
   const { open } = useWalletModal(); 
-  const { account } = useWallet();  
+  const { account, signer } = useWallet();  
 
   return (
     <button onClick={open}>
@@ -174,19 +174,25 @@ const onSendCoffee = async () => {
     );
 
     // Sign and send the transaction
-    const tx = vendor.sign("tx", [
-      {
-        to: contractClause.to,
-        value: contractClause.value.toString(),
-        data: contractClause.data.toString(),
-      },
-    ]);
+    const tx = () =>
+      signer?.sendTransaction({
+          clauses: [
+              {
+                  to: contractClause.to,
+                  value: contractClause.value.toString(),
+                  data: contractClause.data.toString(),
 
-    const result = await tx.request();
+              },
+            ],
+          comment: `${account} sent you a coffee!`,
+      });
+
+      
+    const result = await tx();
 
     // Wait for transaction confirmation
     const thorClient = ThorClient.at(THOR_URL);
-    const txReceipt = await thorClient.transactions.waitForTransaction(result.txid);
+    const txReceipt = await thorClient.transactions.waitForTransaction(result);
 
     if (txReceipt?.reverted) {
       setTxStatus(TransactionStatus.Reverted);

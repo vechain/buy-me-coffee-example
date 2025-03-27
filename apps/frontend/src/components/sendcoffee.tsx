@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useWallet } from "@vechain/dapp-kit-react";
+import { useConnex, useWallet } from "@vechain/vechain-kit";
 import { ABIContract, Address, Clause, VET } from "@vechain/sdk-core";
 import { ThorClient } from "@vechain/sdk-network";
 import {
@@ -37,8 +37,8 @@ enum TransactionStatus {
 }
 
 export function SendCoffee({refetch}) {
-  const { account, signer } = useWallet();
-  
+  const { account } = useWallet();
+  const { vendor } = useConnex();  
   const toast = useToast();
 
   const {
@@ -89,28 +89,23 @@ export function SendCoffee({refetch}) {
         { comment: `${account} sent you a coffee!` }
       );
 
-      const tx = () =>
-        signer?.sendTransaction({
-            clauses: [
-                {
-                    to: contractClause.to,
-                    value: contractClause.value.toString(),
-                    data: contractClause.data.toString(),
-
-                },
-            ],
+      const tx = vendor.sign("tx", [
+        {
+          to: contractClause.to,
+          value: contractClause.value.toString(),
+          data: contractClause.data.toString(),
           comment: `${account} sent you a coffee!`,
-        });
+        },
+      ]);
 
-      
-      const result = await tx();
-      setTxId(result);
+      const result = await tx.request();
+      setTxId(result?.txid);
       setTxStatus(TransactionStatus.Pending);
       onDrawerOpen();
 
       const thorClient = ThorClient.at(THOR_URL);
       const txReceipt = await thorClient.transactions.waitForTransaction(
-        result
+        result.txid
       );
 
       if (txReceipt?.reverted) {

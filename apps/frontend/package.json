@@ -7,17 +7,19 @@
     "dev": "vite"
   },
   "dependencies": {
-    "@chakra-ui/react": "^2.8.2",
+    "@chakra-ui/react": "^2.10.7",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-    "@vechain/dapp-kit-react": "^2.0.0-rc.1",
+    "@repo/config-contract": "*",
+    "@tanstack/react-query": "^5.69.0",
+    "@vechain/dapp-kit-react": "^1.4.1",
     "@vechain/sdk-network": "^1.0.0",
+    "@vechain/vechain-kit": "^1.5.13",
     "framer-motion": "^12.5.0",
     "next-themes": "^0.4.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-icons": "^5.5.0",
-    "@repo/config-contract": "*"
+    "react-icons": "^5.5.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",

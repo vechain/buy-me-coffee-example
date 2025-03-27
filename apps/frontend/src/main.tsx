@@ -3,16 +3,16 @@ import {  StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
-import { DAppKitProvider } from '@vechain/dapp-kit-react';
 import { ChakraProvider } from '@chakra-ui/react';
 import {THOR_URL} from "./config/constants.ts";
+import { VeChainKitProviderWrapper } from './providers/index.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
       <ChakraProvider>
-          <DAppKitProvider node={THOR_URL}>
+        <VeChainKitProviderWrapper>
             <App/>
-          </DAppKitProvider>
+          </VeChainKitProviderWrapper>
       </ChakraProvider>
   </StrictMode>,
 )

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useWallet } from "@vechain/dapp-kit-react";
+import { useWallet } from "@vechain/vechain-kit";
 import { ThorClient } from "@vechain/sdk-network";
 import { Address } from "@vechain/sdk-core";
 import { Stat, StatLabel, StatNumber } from "@chakra-ui/react";
@@ -27,7 +27,7 @@ export function VetBalance() {
       
       // Get the account info using the user's address
       const accountInfo = await thorClient.accounts.getAccount(
-        Address.of(account)
+        Address.of(account.address)
       );
       
       // Update the balance with the VET amount

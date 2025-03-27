@@ -56,7 +56,7 @@ React can interact with **Web3 wallets** like **VeWorld** to connect users to th
 #### **Example: Using `dapp-kit`**
 ```jsx
 import React from "react";
-import { useWallet, useWalletModal } from "@vechain/dapp-kit-react";
+import { useWallet, useWalletModal } from "@vechain/vechain-kit";
 
 export function ConnectWalletButton() {
   const { open } = useWalletModal(); 
@@ -64,7 +64,7 @@ export function ConnectWalletButton() {
 
   return (
     <button onClick={open}>
-          {account || "Connect VeWorld"}
+          {account.address || "Connect VeWorld"}
     </button>
   );
 }

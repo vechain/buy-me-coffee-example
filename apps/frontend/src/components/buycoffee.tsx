@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { useConnex, useWallet } from "@vechain/vechain-kit";
+import { 
+  useSendTransaction,
+} from '@vechain/vechain-kit';
 import { ABIContract, Address, Clause, VET } from "@vechain/sdk-core";
 import { ThorClient } from "@vechain/sdk-network";
 import {
@@ -63,6 +66,32 @@ export function BuyCoffee({refetch}) {
   );
   const [isLoading, setIsLoading] = useState(false);
 
+
+  const contractClause = Clause.callFunction(
+    Address.of(config.CONTRACT_ADDRESS),
+    ABIContract.ofAbi(COFFEE_CONTRACT_ABI).getFunction("buyCoffee"),
+    [name, message],
+    VET.of(1),
+    { comment: "buy a coffee" }
+  );
+
+  const accountCheck = account || null
+  const {
+    sendTransaction: buyCoffee,
+    isTransactionPending: isCustomPending,
+    status: customStatus,
+    error: customError
+} = useSendTransaction({
+  //@ts-ignore
+    signerAccountAddress: accountCheck.address,
+    onTxConfirmed: () => console.log("Custom transaction successful"),
+    onTxFailedOrCancelled: () => console.log("Custom transaction failed")
+});
+
+
+
+  
+
   if (!account) return null;
 
   // Handle form submissions
@@ -82,59 +111,57 @@ export function BuyCoffee({refetch}) {
       setIsLoading(true);
       onModalClose();
 
-      const contractClause = Clause.callFunction(
-        Address.of(config.CONTRACT_ADDRESS),
-        ABIContract.ofAbi(COFFEE_CONTRACT_ABI).getFunction("buyCoffee"),
-        [name, message],
-        VET.of(1),
-        { comment: "buy a coffee" }
-      );
 
-      const tx = vendor.sign("tx", [
-        {
-          to: contractClause.to,
-          value: contractClause.value.toString(),
-          data: contractClause.data.toString(),
+
+      // const tx = vendor.sign("tx", [
+      //   {
+      //     to: contractClause.to,
+      //     value: contractClause.value.toString(),
+      //     data: contractClause.data.toString(),
+      //     comment: `${account} sent you a coffee!`,
+      //   },
+      // ]);
 
 
 
+    
 
-
-          comment: `${account} sent you a coffee!`,
-        },
-      ]);
-
-      const result = await tx.request();
-      setTxId(result?.txid);
+      await buyCoffee([{
+        to: contractClause.to,
+        value: contractClause.value.toString(),
+        data: contractClause.data.toString(),
+        comment: `${account} sent you a coffee!`,
+      }])
+      // setTxId(result);
 
       setTxStatus(TransactionStatus.Pending);
       onDrawerOpen();
 
       const thorClient = ThorClient.at(THOR_URL);
-      const txReceipt = await thorClient.transactions.waitForTransaction(
-        result.txid
-      );
+      // const txReceipt = await thorClient.transactions.waitForTransaction(
+      //   result.txid
+      // );
 
-      if (txReceipt?.reverted) {
-        setTxStatus(TransactionStatus.Reverted);
-        toast({
-          title: "Transaction Failed",
-          description: "The transaction was reverted.",
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-        });
-      } else {
-        setTxStatus(TransactionStatus.Success);
-        toast({
-          title: "Success!",
-          description: "Thank you for the coffee! ☕",
-          status: "success",
-          duration: 5000,
-          isClosable: true,
-        });
-        refetch(txReceipt)
-      }
+      // if (txReceipt?.reverted) {
+      //   setTxStatus(TransactionStatus.Reverted);
+      //   toast({
+      //     title: "Transaction Failed",
+      //     description: "The transaction was reverted.",
+      //     status: "error",
+      //     duration: 5000,
+      //     isClosable: true,
+      //   });
+      // } else {
+      //   setTxStatus(TransactionStatus.Success);
+      //   toast({
+      //     title: "Success!",
+      //     description: "Thank you for the coffee! ☕",
+      //     status: "success",
+      //     duration: 5000,
+      //     isClosable: true,
+      //   });
+      //   refetch(txReceipt)
+      // }
     } catch (error) {
       console.error("Error sending coffee:", error);
       setTxStatus(TransactionStatus.Reverted);

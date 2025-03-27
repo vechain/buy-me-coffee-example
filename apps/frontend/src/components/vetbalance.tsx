@@ -10,7 +10,7 @@ export function VetBalance() {
   // State to keep track of the balance and if it's loading
   const [balance, setBalance] = useState(0); // The VET amount
   const [isLoading, setIsLoading] = useState(false); // Shows if we're getting the balance
-  
+
   // Get the user's wallet address from the useWallet hook
   const { account } = useWallet();
 
@@ -20,29 +20,32 @@ export function VetBalance() {
     if (!account) return;
 
     setIsLoading(true); // Show loading while we get the balance
-    
+
     try {
       // Connect to VeChain network
       const thorClient = ThorClient.at(THOR_URL);
-      
+
       // Get the account info using the user's address
       const accountInfo = await thorClient.accounts.getAccount(
         Address.of(account.address)
       );
-      
+
+      const balanceInWei = BigInt(accountInfo.balance);
+      const balanceInVET = Number(balanceInWei) / 10 ** 18;
+
       // Update the balance with the VET amount
-      setBalance(accountInfo.vet.n);
+      setBalance(balanceInVET);
     } catch (error) {
       console.log("Error getting balance:", error); // Show error in console
     }
-    
+
     setIsLoading(false); // Done loading
   };
 
   // This runs when the component loads or account changes
   useEffect(() => {
     getBalance(); // Get the balance when the component starts
-  }, [account]); // Only run again if account changes
+  }, []); // Only run again if account changes
 
   // Show loading message while getting balance
   if (isLoading) {

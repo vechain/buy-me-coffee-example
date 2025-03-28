@@ -12,7 +12,6 @@
     "@emotion/styled": "^11.14.0",
     "@repo/config-contract": "*",
     "@tanstack/react-query": "^5.69.0",
-    "@vechain/dapp-kit-react": "^1.4.1",
     "@vechain/sdk-network": "^1.0.0",
     "@vechain/vechain-kit": "^1.5.13",
     "framer-motion": "^12.5.0",

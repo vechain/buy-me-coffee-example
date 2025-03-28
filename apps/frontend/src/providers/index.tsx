@@ -4,13 +4,13 @@ import { VeChainKitProvider } from '@vechain/vechain-kit'
 export function VeChainKitProviderWrapper({ children }: any) {
     return (
          <VeChainKitProvider
-            // feeDelegation={{
-            //     delegatorUrl: 'https://sponsor-testnet.vechain.energy/by/441',
-            //     // set to false if you want to delegate ONLY social login transactions
-            //     delegateAllTransactions: false 
-            // }}
+            feeDelegation={{
+                delegatorUrl: 'https://sponsor-testnet.vechain.energy/by/441',
+                // set to false if you want to delegate ONLY social login transactions
+                delegateAllTransactions: false 
+            }}
             loginMethods={[
-                // { method: 'vechain', gridColumn: 4 },
+                { method: 'vechain', gridColumn: 4 },
                 { method: 'dappkit', gridColumn: 4 },
             ]}
             dappKit={{
@@ -31,7 +31,7 @@ export function VeChainKitProviderWrapper({ children }: any) {
                     },
                 },
             }}
-            darkMode={true}
+            darkMode={false}
             language="en"
             network={{
                 type: 'test',

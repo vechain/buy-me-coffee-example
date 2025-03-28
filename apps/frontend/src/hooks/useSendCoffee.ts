@@ -1,8 +1,9 @@
 import { 
     useSendTransaction,
+    Wallet
   } from '@vechain/vechain-kit';
 
-export const useSendCoffee = (account) => {
+export const useSendCoffee = (account: Wallet) => {
     const {
         sendTransaction: sendCoffee,
         isTransactionPending: isPending,

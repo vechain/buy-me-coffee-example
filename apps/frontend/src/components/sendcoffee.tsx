@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useConnex, useWallet } from "@vechain/vechain-kit";
 import { ABIContract, Address, Clause, VET } from "@vechain/sdk-core";
 import { ThorClient } from "@vechain/sdk-network";
@@ -21,7 +21,7 @@ import {
   Input,
   Text,
   useToast,
-  useDisclosure
+  useDisclosure,
 } from "@chakra-ui/react";
 import coffeeLogo from "../assets/buy-coffee.png";
 import { COFFEE_CONTRACT_ABI, config } from "@repo/config-contract";
@@ -31,28 +31,24 @@ import "./buycoffee.css";
 import { useSendCoffee } from "../hooks/useSendCoffee";
 
 enum TransactionStatus {
-  NotSent = "NOT_SENT",
-  Pending = "PENDING",
-  Success = "SUCCESS",
-  Reverted = "REVERTED",
+  Pending = "pending",
+  Success = "success",
+  Error = "error",
 }
 
-export function SendCoffee({refetch}) {
-    // Separate states instead of single formData object
-    const [name, setName] = useState("")
-    const [address, setAddress] = useState("");
-    const [message, setMessage] = useState("");
-    const [txId, setTxId] = useState<string | null>(null);
-    const [txStatus, setTxStatus] = useState<TransactionStatus>(
-      TransactionStatus.NotSent
-    );
-    const [isLoading, setIsLoading] = useState(false);
+export function SendCoffee({ refetch }) {
+  // Separate states instead of single formData object
+  const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
+  const [message, setMessage] = useState("");
+  const [txId, setTxId] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { account } = useWallet();
   const toast = useToast();
 
-    const { sendCoffee, isPending, status, error, txReceipt } =
-      useSendCoffee(account);
+  const { sendCoffee, isPending, status, error, txReceipt } =
+    useSendCoffee(account);
 
   const {
     isOpen: isDrawerOpen,
@@ -65,11 +61,6 @@ export function SendCoffee({refetch}) {
     onOpen: onModalOpen,
     onClose: onModalClose,
   } = useDisclosure();
-
-
-
-
-
 
   const onSendCoffee = async () => {
     if (!address.trim() || !message.trim() || !name.trim()) {
@@ -94,7 +85,7 @@ export function SendCoffee({refetch}) {
     try {
       setIsLoading(true);
       onModalClose();
-      
+
       await sendCoffee([
         {
           to: contractClause.to,
@@ -103,38 +94,8 @@ export function SendCoffee({refetch}) {
           comment: `${account} sent you a coffee!`,
         },
       ]);
-
-
-      if (!isPending && txReceipt) {
-        setTxId(txReceipt?.meta.txID);
-      }
-
-      setTxStatus(TransactionStatus.Pending);
-      onDrawerOpen();
-
-      if (txReceipt?.reverted) {
-        setTxStatus(TransactionStatus.Reverted);
-        toast({
-          title: "Transaction Failed",
-          description: "The transaction was reverted.",
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-        });
-      } else {
-        setTxStatus(TransactionStatus.Success);
-        toast({
-          title: "Success!",
-          description: "Thank you for the coffee! ☕",
-          status: "success",
-          duration: 5000,
-          isClosable: true,
-        });
-        refetch(txReceipt?.meta.txID);
-      }
     } catch (error) {
       console.error("Error sending coffee:", error);
-      setTxStatus(TransactionStatus.Reverted);
       toast({
         title: "Error",
         description: "An error occurred while sending the coffee.",
@@ -144,17 +105,52 @@ export function SendCoffee({refetch}) {
       });
     } finally {
       setIsLoading(false);
+      if (txReceipt) {
+        setTxId(txReceipt?.meta.txID);
+        const thorClient = ThorClient.at(THOR_URL);
+
+        // Wait for confirmation
+        const txReceiptStatus =
+          await thorClient.transactions.waitForTransaction(
+            txReceipt?.meta.txID
+          );
+
+        if (txReceiptStatus?.reverted) {
+          toast({
+            title: "Transaction Failed",
+            description: "The transaction was reverted.",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+        } else {
+          toast({
+            title: "Success!",
+            description: "Thank you for the coffee! ☕",
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+          });
+
+          // Open the drawer only after success
+          onDrawerOpen();
+          refetch(txReceipt?.meta.txID);
+        }
+      }
     }
   };
 
   const handleSendCoffee = () => {
     setTxId(null);
-    setTxStatus(TransactionStatus.NotSent);
     setName("");
     setAddress("");
     setMessage("");
     onModalOpen();
   };
+
+  useEffect(() => {
+    refetch(txReceipt?.meta.txID);
+  }, [isPending]);
 
   return (
     <div>
@@ -204,7 +200,7 @@ export function SendCoffee({refetch}) {
                 onChange={(e) => setAddress(e.target.value)}
                 isRequired
               />
-                <Input
+              <Input
                 id="coffee-name"
                 placeholder="Friendly Name"
                 size="md"
@@ -247,13 +243,13 @@ export function SendCoffee({refetch}) {
           <DrawerHeader>Coffee Status</DrawerHeader>
           <DrawerBody>
             {txId && <Text>Transaction ID: {txId}</Text>}
-            {status === 'pending' && (
+            {status === TransactionStatus.Pending && (
               <Text>Transaction is pending...</Text>
             )}
-            {status === 'success' && (
+            {status === TransactionStatus.Success && (
               <Text>Transaction succeeded! ✅</Text>
             )}
-            {status === 'error' && (
+            {status === TransactionStatus.Error && (
               <Text>Transaction reverted! ❌</Text>
             )}
           </DrawerBody>

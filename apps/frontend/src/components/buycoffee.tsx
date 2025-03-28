@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useConnex, useWallet } from "@vechain/vechain-kit";
 import { useSendTransaction } from "@vechain/vechain-kit";
 import { ABIContract, Address, Clause, VET } from "@vechain/sdk-core";
@@ -32,10 +32,9 @@ import { useBuyCoffee } from "../hooks/useBuyCoffee";
 import "./buycoffee.css";
 
 enum TransactionStatus {
-  NotSent = "NOT_SENT",
-  Pending = "PENDING",
-  Success = "SUCCESS",
-  Reverted = "REVERTED",
+  Pending = "pending",
+  Success = "success",
+  Error = "error",
 }
 
 export function BuyCoffee({ refetch }) {
@@ -43,9 +42,6 @@ export function BuyCoffee({ refetch }) {
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const [txId, setTxId] = useState<string | null>(null);
-  const [txStatus, setTxStatus] = useState<TransactionStatus>(
-    TransactionStatus.NotSent
-  );
   const [isLoading, setIsLoading] = useState(false);
 
   const { account } = useWallet();
@@ -66,13 +62,6 @@ export function BuyCoffee({ refetch }) {
     onClose: onModalClose,
   } = useDisclosure();
 
-  const contractClause = Clause.callFunction(
-    Address.of(config.CONTRACT_ADDRESS),
-    ABIContract.ofAbi(COFFEE_CONTRACT_ABI).getFunction("buyCoffee"),
-    [name, message],
-    VET.of(1),
-    { comment: "buy a coffee" }
-  );
   // Handle form submissions
   const onSendCoffee = async () => {
     if (!name.trim() || !message.trim()) {
@@ -86,6 +75,14 @@ export function BuyCoffee({ refetch }) {
       return;
     }
 
+    const contractClause = Clause.callFunction(
+      Address.of(config.CONTRACT_ADDRESS),
+      ABIContract.ofAbi(COFFEE_CONTRACT_ABI).getFunction("buyCoffee"),
+      [name, message],
+      VET.of(1),
+      { comment: "buy a coffee" }
+    );
+
     try {
       setIsLoading(true);
       onModalClose();
@@ -98,38 +95,8 @@ export function BuyCoffee({ refetch }) {
           comment: `${account} sent you a coffee!`,
         },
       ]);
-
-      if (!isPending && txReceipt) {
-        setTxId(txReceipt?.meta.txID);
-        onDrawerOpen();
-      }
-
-      setTxStatus(TransactionStatus.Pending);
-
-
-      if (!isPending && txReceipt?.reverted) {
-        setTxStatus(TransactionStatus.Reverted);
-        toast({
-          title: "Transaction Failed",
-          description: "The transaction was reverted.",
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-        });
-      } else {
-        setTxStatus(TransactionStatus.Success);
-        toast({
-          title: "Success!",
-          description: "Thank you for the coffee! ☕",
-          status: "success",
-          duration: 5000,
-          isClosable: true,
-        });
-        refetch(txReceipt?.meta.txID);
-      }
     } catch (error) {
       console.error("Error sending coffee:", error);
-      setTxStatus(TransactionStatus.Reverted);
       toast({
         title: "Error",
         description: "An error occurred while sending the coffee.",
@@ -139,16 +106,51 @@ export function BuyCoffee({ refetch }) {
       });
     } finally {
       setIsLoading(false);
+      if (txReceipt) {
+        setTxId(txReceipt?.meta.txID);
+        const thorClient = ThorClient.at(THOR_URL);
+
+        // Wait for confirmation
+        const txReceiptStatus =
+          await thorClient.transactions.waitForTransaction(
+            txReceipt?.meta.txID
+          );
+
+        if (txReceiptStatus?.reverted) {
+          toast({
+            title: "Transaction Failed",
+            description: "The transaction was reverted.",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+        } else {
+          toast({
+            title: "Success!",
+            description: "Thank you for the coffee! ☕",
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+          });
+
+          // Open the drawer only after success
+          onDrawerOpen();
+          refetch(txReceipt?.meta.txID);
+        }
+      }
     }
   };
 
   const handleSendCoffee = () => {
     setTxId(null);
-    setTxStatus(TransactionStatus.NotSent);
     setName("");
     setMessage("");
     onModalOpen();
   };
+
+  useEffect(() => {
+    refetch(txReceipt?.meta.txID);
+  }, [isPending]);
 
   return (
     <div style={{ position: "relative", top: "50px", height: "300px" }}>
@@ -213,13 +215,13 @@ export function BuyCoffee({ refetch }) {
           <DrawerHeader>Coffee Status</DrawerHeader>
           <DrawerBody>
             {txId && <Text>Transaction ID: {txId}</Text>}
-            {status === 'pending' && (
+            {status === TransactionStatus.Pending && (
               <Text>Transaction is pending...</Text>
             )}
-            {status === 'success' && (
+            {status === TransactionStatus.Success && (
               <Text>Transaction succeeded! ✅</Text>
             )}
-            {status === 'error' && (
+            {status === TransactionStatus.Error && (
               <Text>Transaction reverted! ❌</Text>
             )}
           </DrawerBody>

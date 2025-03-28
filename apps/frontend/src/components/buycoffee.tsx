@@ -101,12 +101,13 @@ export function BuyCoffee({ refetch }) {
 
       if (!isPending && txReceipt) {
         setTxId(txReceipt?.meta.txID);
+        onDrawerOpen();
       }
 
       setTxStatus(TransactionStatus.Pending);
-      onDrawerOpen();
 
-      if (txReceipt?.reverted) {
+
+      if (!isPending && txReceipt?.reverted) {
         setTxStatus(TransactionStatus.Reverted);
         toast({
           title: "Transaction Failed",

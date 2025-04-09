@@ -89,7 +89,7 @@ export function ConnectWalletButton() {
 React can interact with **VeWorld nodes** to connect users to the **VeChain** blockchain. This allows them to fetch data, interact with smart contracts, and read transaction history.
 
 ### 2. Prerequisites
-- Install `@vechain/sdk` to interact with the blockchain.
+- Install `@vechain/sdk-network` to interact with the blockchain.
 - Use **VeChain's Thor API** to communicate with a **VeWorld node**.
 - Ensure you have the **smart contract address** and **ABI**.
 
@@ -97,7 +97,7 @@ React can interact with **VeWorld nodes** to connect users to the **VeChain** bl
 
 #### **Example: Using `ThorClient`**
 ```jsx
-import { ThorClient } from "@vechain/sdk";
+import { ThorClient } from "@vechain/sdk-network";
 
 const THOR_URL = "https://mainnet.vechain.org"; 
 const CONTRACT_ADDRESS = '0xbf0f3f5b273693bd6552567631d2615ffd5f4b35'
@@ -130,7 +130,7 @@ const CONTRACT_ADDRESS = '0xbf0f3f5b273693bd6552567631d2615ffd5f4b35'
 This function allows users to **send a "coffee"** (a small token payment) to another wallet on the **VeChain blockchain**. It interacts with a **smart contract** and ensures that transactions are processed securely.
 
 ### 2. Prerequisites
-- Install **VeChain SDK** (`@vechain/sdk`) to interact with the blockchain.
+- Install **VeChain SDK** (`@vechain/sdk-network`) to interact with the blockchain.
 - Ensure the **VeWorld Wallet** is connected and authorized.
 - Use **VeChain's Thor API** to broadcast transactions.
 
@@ -139,7 +139,7 @@ This function allows users to **send a "coffee"** (a small token payment) to ano
 
 #### **Example: Sending Coffee with VeChain**
 ```jsx
-import { ThorClient } from "@vechain/sdk";
+import { ThorClient } from "@vechain/sdk-network";
 
 const THOR_URL = "https://mainnet.vechain.org"; 
 const CONTRACT_ADDRESS = '0xbf0f3f5b273693bd6552567631d2615ffd5f4b35'
@@ -260,7 +260,7 @@ Now, your DApp allows users to **send a "coffee" transaction** on the VeChain bl
 This function allows users to **fetch the transaction history** (e.g., coffee donations) from the **VeChain blockchain**. It interacts with a **smart contract** to retrieve all past donations and displays them in the UI.
 
 ### 2. Prerequisites
-- Install **VeChain SDK** (`@vechain/sdk`) to interact with the blockchain.
+- Install **VeChain SDK** (`@vechain/sdk-network`) to interact with the blockchain.
 - Ensure the **VeWorld Wallet** is connected.
 - Use **VeChain's Thor API** to interact with the smart contract.
 
@@ -268,7 +268,7 @@ This function allows users to **fetch the transaction history** (e.g., coffee do
 
 #### **General Workflow**
 ```jsx
-import { ThorClient } from "@vechain/sdk";
+import { ThorClient } from "@vechain/sdk-network";
 
 const THOR_URL = "https://mainnet.vechain.org"; 
 const CONTRACT_ADDRESS = '0xbf0f3f5b273693bd6552567631d2615ffd5f4b35'

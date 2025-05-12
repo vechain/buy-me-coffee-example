@@ -70,7 +70,7 @@ Returns: An array of CoffeeSale structs containing details of each sale.
 
 2. buyCoffee(string memory _name, string memory _message) <br/>
 **Description**: Allows a user to buy coffee for the contract owner.
-<br/>
+
 **Parameters**:
 _name: Name of the coffee purchaser.
 _message: A message from the purchaser.

@@ -21,13 +21,23 @@ The "Buy Me A Coffee" DApp allows users to send coffee donations to the contract
 
 ## Installation
 Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd buy-me-a-coffee
+```bash
+git clone <repository-url>
+cd buy-me-a-coffee
 ```
+Make sure you are using a compatible Node.js version:
+```bash
+nvm install 20.18.0  
+nvm use 20.18.0
+```
+Install all the packages:
+```bash
+yarn
+```
+
 ## Creating and Writing a Contract
 
-  ```bash
+```bash
 cd apps/contracts/contracts
 ```
 Create a new Solidity file (e.g., MyNewContract.sol) and define your contract structure. You can use the BuyMeACoffee.sol as a reference.
@@ -36,23 +46,30 @@ Create a new Solidity file (e.g., MyNewContract.sol) and define your contract st
 Modify the deployment script in the scripts directory.
 
 Run the deployment script using Hardhat:
-  ```bash
+```bash
 npm run compile
 ```
 
 To deploy to Solo node:
-  ```bash
+```bash
 npm run deploy-solo
 ```
 
 To deploy to Testnet:
-  ```bash
+```bash
 npm run deploy-testnet
 ```
 
 To deploy to Mainnet:
-  ```bash
+```bash
 npm run deploy-mainnet
+```
+
+### Launch the DApp 
+To run the DApp locally, launch the following command from the frontend folder:
+```bash
+cd apps/frontend
+yarn dev
 ```
 
 ### How the DApp Works

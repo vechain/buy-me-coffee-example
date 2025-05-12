@@ -61,8 +61,6 @@ The DApp allows users to purchase coffee for the owner by sending a specified am
 ### Functions Overview
 1. getSales() <br/>
 **Description**: Fetches all stored coffee sales.
-Returns: An array of CoffeeSale structs containing details of each sale.
-   - **Purpose**: Fetches all stored coffee sales.
    - **Functionality**:
      - **Returns**: An array of `CoffeeSale` structs, each containing details about a coffee purchase.
      - **Usage**: This function is called by the frontend to display the transaction history in the [TransactionHistory](cci:1://file:///Users/andreas.frank/work/buy-me-a-coffee/apps/frontend/src/components/txhistory.tsx:48:0-168:1) component.
@@ -70,12 +68,6 @@ Returns: An array of CoffeeSale structs containing details of each sale.
 
 2. buyCoffee(string memory _name, string memory _message) <br/>
 **Description**: Allows a user to buy coffee for the contract owner.
-
-**Parameters**:
-_name: Name of the coffee purchaser.
-_message: A message from the purchaser.
-Events: Emits CoffeeSold event upon successful purchase.
-   - **Purpose**: Allows a user to buy coffee for the contract owner.
    - **Parameters**:
      - `_name`: The name of the coffee purchaser.
      - `_message`: A personalized message from the purchaser.
@@ -87,12 +79,6 @@ Events: Emits CoffeeSold event upon successful purchase.
 
 3. sendCoffee(address payable _to, string memory _name, string memory _message) <br/> 
 **Description**: Sends coffee to a specified address.
-**Parameters**:
-_to: Recipient address.
-_name: Name of the coffee purchaser.
-_message: A message from the purchaser.
-Events: Emits CoffeeSold event upon successful sending.
-   - **Purpose**: Sends coffee to a specified address.
    - **Parameters**:
      - `_to`: The recipient's address.
      - `_name`: The name of the coffee purchaser.
@@ -105,8 +91,6 @@ Events: Emits CoffeeSold event upon successful sending.
 
 4. withdrawTips() <br/>
 **Description**: Allows the contract owner to withdraw the balance stored in the contract.
-Access Control: Only the owner can execute this function.
- - **Purpose**: Allows the contract owner to withdraw the balance stored in the contract.
    - **Functionality**:
      - **Access Control**: Ensures that only the owner can execute this function.
      - **VET Transfer**: Transfers the entire balance from the contract to the owner's address.

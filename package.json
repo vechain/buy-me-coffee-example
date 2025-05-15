@@ -10,6 +10,7 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "turbo": "^2.4.4"
   },
   "packageManager": "yarn@1.22.21",

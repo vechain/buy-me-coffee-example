@@ -14,62 +14,82 @@ The "Buy Me A Coffee" DApp allows users to send coffee donations to the contract
 5. [How the DApp Works](#how-the-dapp-works)
 6. [Functions Overview](#functions-overview)
 
+# Buy Me a Coffee - Development Setup
+
+This project uses a multi-package Yarn workspace with a frontend and contracts subprojects. To ease development, you can run the project inside a Docker dev container.
+
+---
+
 ## Prerequisites
-- Node.js and npm installed
-- Hardhat installed globally (`npm install -g hardhat`)
-- A wallet (e.g., MetaMask) for interacting with the Ethereum network
 
-## Installation
-Clone the repository:
+- [Docker](https://docs.docker.com/get-docker/) installed on your machine
+- Basic familiarity with Docker commands
+- Yarn (optional, if running outside Docker)
+
+---
+
+## Running the Project Locally (without Docker)
+
+Install dependencies:
+
 ```bash
-git clone <repository-url>
-cd buy-me-a-coffee
-```
-Make sure you are using a compatible Node.js version:
-```bash
-nvm install 20.18.0  
-nvm use 20.18.0
-```
-Install all the packages:
-```bash
-yarn
+yarn install
 ```
 
-## Creating and Writing a Contract
-
+### Run the frontend:
 ```bash
-cd apps/contracts/contracts
+yarn workspace @repo/fe dev
 ```
-Create a new Solidity file (e.g., MyNewContract.sol) and define your contract structure. You can use the BuyMeACoffee.sol as a reference.
+Open your browser at http://localhost:3000
+ 
+## Running the Project in a Docker Dev Container
+We provide a Docker container configured for this project, with all dependencies installed and ready to go.
 
-## Deploying the Contract
-Modify the deployment script in the scripts directory.
+### Build the Docker Image
+Run this from the root project directory (where the .devcontainer folder is):
 
-Run the deployment script using Hardhat:
 ```bash
-npm run compile
+docker build -f .devcontainer/Dockerfile -t buy-me-coffee-dev .
 ```
+### Run the Container
+Start the container and mount your workspace inside it:
 
-To deploy to Solo node:
 ```bash
-npm run deploy-solo
+docker run -it --rm -p 3000:3000 -v $(pwd):/workspace buy-me-coffee-dev
 ```
-
-To deploy to Testnet:
+If port 3000 is busy, map it to another port on your host, e.g.:
 ```bash
-npm run deploy-testnet
-```
-
-To deploy to Mainnet:
-```bash
-npm run deploy-mainnet
+docker run -it --rm -p 3001:3000 -v $(pwd):/workspace buy-me-coffee-dev
 ```
 
-### Launch the DApp 
-To run the DApp locally, launch the following command from the frontend folder:
+Open your browser at http://localhost:3000 (or :3001 if remapped).
+
+### Notes
+The container uses Node.js 20.x on Alpine Linux with Yarn 4.9.1 enabled via Corepack.
+
+The workspace root has dependencies managed via Yarn workspaces (apps/*, packages/*).
+
+Smart contract compilation should be done inside the container at runtime (via yarn workspace @repo/contracts compile) due to environment constraints.
+
+If you add new dependencies, rebuild the container or run yarn install inside it.
+
+For Windows users, make sure Docker Desktop is properly configured for volume mounts and networking.
+
+Useful Commands Inside the Container
+Install dependencies (if needed):
+
 ```bash
-cd apps/frontend
-yarn dev
+yarn install
+```
+### Start frontend development server:
+
+```bash
+yarn workspace @repo/fe dev
+```
+### Compile contracts:
+
+```bash
+yarn workspace @repo/contracts compile
 ```
 
 ### How the DApp Works

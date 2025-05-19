@@ -36,6 +36,42 @@
       "artifacts": [
         "BuyMeACoffee"
       ]
+    },
+    "/Users/andreas.frank/tests/buy-me-coffee-example/apps/contracts/contracts/BuyMeACoffee.sol": {
+      "lastModificationDate": 1747075285183,
+      "contentHash": "023961ae99345e30eda021e059e69c49",
+      "sourceName": "contracts/BuyMeACoffee.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.18"
+      ],
+      "artifacts": [
+        "BuyMeACoffee"
+      ]
     }
   }
 }

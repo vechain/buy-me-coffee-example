@@ -21,4 +21,4 @@ RUN yarn workspaces foreach -v --all --topological-dev --exclude private --no-pr
 EXPOSE 3000
 
 # Start frontend dev server by default
-CMD ["yarn", "dev"]
+CMD yarn install; cd apps/frontend; yarn dev

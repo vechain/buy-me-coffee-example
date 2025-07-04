@@ -17,7 +17,7 @@ The "Buy Me A Coffee" DApp allows users to send coffee donations to the contract
 ## Prerequisites
 - Node.js and npm installed
 - Hardhat installed globally (`npm install -g hardhat`)
-- A wallet (e.g., MetaMask) for interacting with the Ethereum network
+- A wallet (VeWorld) for interacting with the VeChain blockchain
 
 ## Installation
 Clone the repository:

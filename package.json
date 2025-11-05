@@ -6,7 +6,12 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "solo-up": "make solo-up",
+    "contracts-compile": "make contracts-compile",
+    "solo-down": "make solo-down",
+    "solo-clean": "make solo-clean",
+    "start": "./start-dapp.sh"
   },
   "dependencies": {},
   "devDependencies": {
